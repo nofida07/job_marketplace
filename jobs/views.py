@@ -1,15 +1,33 @@
 from .forms import ProfileForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from .models import Job, Application, Internship, InternshipApplication, Profile
+from .models import Job, Application, Internship, Profile
 from .forms import ApplicationForm, JobForm, CreateAccountForm
-from .forms import InternshipApplicationForm
-from .models import Profile
-from .forms import CreateAccountForm
+from django.contrib.auth.views import LoginView
 
+
+
+class CustomLoginView(LoginView):
+    template_name = "login.html"
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get("username").lower()
+        password = form.cleaned_data.get("password")
+
+        user = authenticate(
+            self.request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+            login(self.request, user)
+            return redirect("home")
+        else:
+            return self.form_invalid(form)
 
 # Home
 def home(request):
@@ -26,22 +44,25 @@ def create_account(request):
     if request.method == "POST":
         form = CreateAccountForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
-            # Save extra fields into Profile
-            user.profile.mobile = form.cleaned_data.get("mobile")
-            user.profile.dob = form.cleaned_data.get("dob")
-            user.profile.profile_picture = form.cleaned_data.get("profile_picture")
-            user.profile.save()
+            user = form.save(commit=False)
+            user.username = form.cleaned_data["username"].lower()
+            user.save()
 
-            login(request, user)
-            messages.success(request, "Registered successfully!")
-            return redirect("home")
+            profile, created = Profile.objects.get_or_create(user=user)
+            profile.mobile = form.cleaned_data["mobile"]
+            profile.dob = form.cleaned_data["dob"]
+            profile.profile_picture = form.cleaned_data.get("profile_picture")
+            profile.save()
+
+            messages.success(request, "Account created! Please login.")
+            return redirect("login")
     else:
         form = CreateAccountForm()
+
     return render(request, "create_account.html", {"form": form})
 
-# Register (basic Django form)
 
+# Register (basic Django form)
 def register(request):
     if request.method == "POST":
         form = CreateAccountForm(request.POST, request.FILES)
@@ -107,37 +128,36 @@ def job_detail(request, pk):
 
 # jobs/views.py
 
+@login_required
 def apply_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     if request.method == "POST":
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             application = form.save(commit=False)
+            application.user = request.user
             application.job = job
-            application.user = request.user   # ✅ attach logged-in user
             application.save()
-            messages.success(request, "Application submitted successfully!")
             return redirect("profile")
     else:
         form = ApplicationForm()
     return render(request, "apply_job.html", {"form": form, "job": job})
 
-
+@login_required
 def apply_internship(request, pk):
     internship = get_object_or_404(Internship, pk=pk)
     if request.method == "POST":
-        form = InternshipApplicationForm(request.POST, request.FILES)
+        form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             application = form.save(commit=False)
+            application.user = request.user
             application.internship = internship
-            application.user = request.user   # ✅ attach logged-in user
             application.save()
             messages.success(request, "Application submitted successfully!")
             return redirect("profile")
     else:
-        form = InternshipApplicationForm()
+        form = ApplicationForm()
     return render(request, "apply_internship.html", {"form": form, "internship": internship})
-
 
 # Internships
 def internship_list(request):
@@ -176,24 +196,14 @@ def edit_profile(request):
 
     return render(request, "edit_profile.html", {"form": form})
 
-
 @login_required
 def profile_view(request):
+    profile = Profile.objects.get(user=request.user)
     job_applications = Application.objects.filter(user=request.user, job__isnull=False)
     internship_applications = Application.objects.filter(user=request.user, internship__isnull=False)
+
     return render(request, "profile.html", {
+        "profile": profile,
         "job_applications": job_applications,
         "internship_applications": internship_applications,
     })
-
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']  # user enters the password they set
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
-    return render(request, 'login.html')
