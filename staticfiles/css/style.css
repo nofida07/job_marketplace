@@ -1,0 +1,123 @@
+/* Global background */
+/* Default background for all pages */
+body {
+  background-color: #5b61a0; /* plain white */
+  color: #212529;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Home page scheme */
+body.home-page {
+  background-color: #5f92c4 !important; /* light blue background */
+}
+
+/* Headings only on home */
+body.home-page h2 {
+  margin-bottom: 20px;
+  color: #212529;
+}
+
+/* Navbar only on home */
+body.home-page .navbar {
+  background-color: #212529 !important;
+}
+
+/* Footer only on home */
+body.home-page footer {
+  background-color: #212529;
+  color: #0f0f10;
+}
+
+/* Cards only on home */
+body.home-page .card {
+  background-color: #0d0b0b;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Buttons only on home */
+body.home-page .btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+body.home-page .btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+/* Hero section only on home */
+body.home-page .hero-section {
+  position: relative;
+  height: 400px;
+  background: url("/static/images/banner.jpg") no-repeat center center;
+  background-size: cover;
+  color: white;
+}
+
+
+body.home-page .hero-section .overlay {
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+body.home-page .hero-section .content {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Headings */
+h2 {
+  margin-bottom: 20px;
+  color: #212529;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #212529 !important; /* dark navbar */
+}
+
+/* Footer */
+footer {
+  background-color: #212529;
+  color: #0f0f0f;
+}
+
+/* Cards (jobs/internships) */
+.card {
+  background-color: #050404;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+/* Hero section */
+.hero-section {
+  position: relative;
+  height: 400px;
+  background: url("/static/images/banner.jpg") no-repeat center center;
+  background-size: cover;
+  color: rgb(133, 84, 84);
+}
+.hero-section .overlay {
+  background-color: rgba(0,0,0,0.5); /* dark overlay for readability */
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.hero-section .content {
+  position: relative;
+  z-index: 1;
+}

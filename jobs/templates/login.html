@@ -3,9 +3,8 @@
 <h2>Login</h2>
 <form method="post">
   {% csrf_token %}
-  <input type="text" name="username" class="form-control" placeholder="Username">
-  <input type="password" name="password" class="form-control" placeholder="Password">
-  <button type="submit" class="btn btn-success">Login</button>
+  {{ form.as_p }}
+  <button type="submit">Login</button>
 </form>
 {% if error %}<p class="text-danger">{{ error }}</p>{% endif %}
 
