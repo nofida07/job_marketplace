@@ -41,6 +41,7 @@ def create_account(request):
     return render(request, "create_account.html", {"form": form})
 
 # Register (basic Django form)
+
 def register(request):
     if request.method == "POST":
         form = CreateAccountForm(request.POST, request.FILES)
@@ -49,6 +50,9 @@ def register(request):
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.email = form.cleaned_data["email"]
+
+            # ✅ Hash the password before saving
+            user.set_password(form.cleaned_data["password1"])
             user.save()
 
             # Save Profile fields
@@ -61,12 +65,13 @@ def register(request):
                 }
             )
 
+            # Log the user in immediately after registration
             login(request, user)
             return redirect("home")
     else:
         form = CreateAccountForm()
     return render(request, "create_account.html", {"form": form})
-
+    
 # Login
 def login_view(request):
     if request.method == "POST":
@@ -180,3 +185,15 @@ def profile_view(request):
         "job_applications": job_applications,
         "internship_applications": internship_applications,
     })
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']  # user enters the password they set
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'login.html', {'error': 'Invalid credentials'})
+    return render(request, 'login.html')
