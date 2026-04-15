@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5" style="max-width: 800px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">{{ internship.title }}</h2>
+      <h5 class="card-subtitle mb-3 text-muted">{{ internship.company }}</h5>
+
+      <p class="card-text">
+        <strong>Location:</strong> {{ internship.location }}<br>
+        <strong>Stipend:</strong> {{ internship.stipend }}<br>
+        <strong>Duration:</strong> {{ internship.duration }}<br>
+        <strong>Posted on:</strong> {{ internship.posted_at|date:"F j, Y" }}
+      </p>
+
+      <!-- Full description -->
+      <div class="mt-4">
+        <h5>Description</h5>
+        <p>{{ internship.description|linebreaks }}</p>
+      </div>
+
+      <!-- Apply button -->
+      <div class="mt-4">
+        <a href="{% url 'apply_internship' internship.id %}" class="btn btn-success">Apply Now</a>
+
+          Apply for this Internship
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

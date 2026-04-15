@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5" style="max-width: 800px;">
+  <h2 class="mb-4 text-center">My Profile</h2>
+
+  <!-- Success/Error Messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Profile Card -->
+  <div class="card shadow-sm">
+    <div class="card-body d-flex align-items-center">
+      <!-- Profile picture -->
+      <div class="me-4">
+        {% if profile.profile_picture %}
+          <img src="{{ profile.profile_picture.url }}" class="rounded-circle" width="150" height="150">
+        {% else %}
+          <div class="rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white"
+               style="width:150px; height:150px; font-size:48px; font-weight:bold;">
+            {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Profile details -->
+      <div>
+        <h4 class="card-title">{{ user.get_full_name|default:user.username }}</h4>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Mobile:</strong> {{ profile.mobile }}</p>
+        <p><strong>Date of Birth:</strong> {{ profile.dob|date:"F j, Y" }}</p>
+        <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applied Jobs -->
+  <div class="mt-5">
+    <h4>Applied Jobs</h4>
+    {% if job_applications %}
+      <ul class="list-group">
+        {% for app in job_applications %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ app.job.title }}</strong> at {{ app.job.company }} ({{ app.job.location }})
+            </div>
+            <span class="badge 
+                {% if app.status == 'selected' %} bg-success 
+                {% elif app.status == 'rejected' %} bg-danger 
+                {% else %} bg-secondary {% endif %}">
+              {{ app.get_status_display }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">You haven’t applied to any jobs yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Applied Internships -->
+  <div class="mt-5">
+    <h4>Applied Internships</h4>
+    {% if internship_applications %}
+      <ul class="list-group">
+        {% for app in internship_applications %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ app.internship.title }}</strong> at {{ app.internship.company }} ({{ app.internship.location }})
+            </div>
+            <span class="badge 
+                {% if app.status == 'selected' %} bg-success 
+                {% elif app.status == 'rejected' %} bg-danger 
+                {% else %} bg-secondary {% endif %}">
+              {{ app.get_status_display }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">You haven’t applied to any internships yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

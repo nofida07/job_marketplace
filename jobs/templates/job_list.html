@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Available Jobs</h2>
+<div class="list-group">
+  {% for job in jobs %}
+    <a href="{% url 'job_detail' job.id %}" class="list-group-item list-group-item-action">
+  <strong>{{ job.title }}</strong> at {{ job.company }} ({{ job.location }})
+  — Salary: {{ job.formatted_salary }}
+  — Type: {{ job.get_job_type_display }}
+    </a>
+
+  {% empty %}
+    <p>No jobs available.</p>
+  {% endfor %}
+</div>
+{% endblock %}

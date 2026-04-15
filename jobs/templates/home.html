@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block body_class %}home-page{% endblock %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Find Your Dream Job</h1>
+    <p>Browse featured jobs and internships today</p>
+    <a href="{% url 'job_list' %}" class="btn btn-primary">Explore Jobs</a>
+  </div>
+</div>
+
+    
+    <!-- Search Bar -->
+    <form method="get" action="{% url 'job_list' %}" class="row g-3 justify-content-center mt-3">
+      <div class="col-md-4">
+        <input type="text" name="title" class="form-control" placeholder="Job title...">
+      </div>
+      <div class="col-md-4">
+        <input type="text" name="location" class="form-control" placeholder="Location...">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Search</button>
+      </div>
+    </form>
+
+    <!-- Quick Filters -->
+    <div class="mt-4">
+      <a href="{% url 'job_list' %}" class="btn btn-warning">Part-time</a>
+      <a href="{% url 'job_list' %}" class="btn btn-warning">Full-time</a>
+      <a href="{% url 'job_list' %}" class="btn btn-warning">Work From Home</a>
+      <a href="{% url 'internship_list' %}" class="btn btn-warning">Internships</a>
+    </div>
+  </div>
+</div>
+
+<!-- Featured Jobs -->
+<div class="container mt-5">
+  <h3 class="mb-3">Featured Jobs</h3>
+  <div class="row">
+    {% for job in jobs %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <span class="badge bg-primary mb-2">Featured</span>
+            <h5 class="card-title">{{ job.title }}</h5>
+            <p class="card-text">
+              <strong>Company:</strong> {{ job.company }}<br>
+              <strong>Location:</strong> {{ job.location }}<br>
+              <strong>Type:</strong> {{ job.get_job_type_display }}<br>
+              <strong>Salary:</strong> {{ job.formatted_salary }}
+            </p>
+            <a href="{% url 'job_detail' job.id %}" class="btn btn-primary w-100">View Job</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">No featured jobs available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Featured Internships -->
+<div class="container mt-5">
+  <h3 class="mb-3">Featured Internships</h3>
+  <div class="row">
+    {% for internship in internships %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <span class="badge bg-success mb-2">Featured</span>
+            <h5 class="card-title">{{ internship.title }}</h5>
+            <p class="card-text">
+              <strong>Company:</strong> {{ internship.company }}<br>
+              <strong>Location:</strong> {{ internship.location }}<br>
+              <strong>Duration:</strong> {{ internship.duration }}<br>
+              <strong>Type:</strong> {{ internship.get_internship_type_display }}
+            </p>
+            <a href="{% url 'internship_detail' internship.id %}" class="btn btn-success w-100">View Internship</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">No featured internships available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

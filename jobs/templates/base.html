@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Intelligent Job Marketplace</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Your custom stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">Job Marketplace</a>
+      <div>
+        <a href="{% url 'job_list' %}" class="btn btn-outline-light me-2">Find Jobs</a>
+        <a href="{% url 'internship_list' %}" class="btn btn-outline-light me-2">Find Internship</a>
+        <a href="{% url 'profile' %}" class="btn btn-outline-light me-2">Profile</a>
+        <a href="{% url 'about' %}" class="btn btn-outline-light me-2">About Us</a>
+        <a href="{% url 'create_account' %}" class="btn btn-outline-light me-2">Create Account</a>
+        
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- ✅ Messages -->
+  <div class="container mt-3">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-fluid p-0">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light p-3 text-center mt-auto">
+    <div>
+      <a href="{% url 'about' %}" class="text-light me-3">About Us</a>
+      <a href="{% url 'terms' %}" class="text-light me-3">Terms & Conditions</a>
+      <a href="{% url 'contact' %}" class="text-light">Contact</a>
+    </div>
+    <p class="mt-2 mb-0">&copy; 2026 Intelligent Job Marketplace</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

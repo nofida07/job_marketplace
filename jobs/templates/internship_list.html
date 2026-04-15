@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Available Internships</h2>
+
+  {% if internships %}
+    <div class="list-group">
+      {% for internship in internships %}
+        <a href="{% url 'internship_detail' internship.id %}" class="list-group-item list-group-item-action">
+        
+
+          <strong>{{ internship.title }}</strong> at {{ internship.company }}
+          <br>
+          <span class="text-muted">
+            Location: {{ internship.location }} |
+            Type: {{ internship.get_job_type_display }} |
+            Stipend: ₹{{ internship.stipend }} |
+            Duration: {{ internship.duration }}
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted text-center">No internships available at the moment.</p>
+  {% endif %}
+</div>
+{% endblock %}
