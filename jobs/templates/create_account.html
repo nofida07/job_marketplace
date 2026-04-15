@@ -4,11 +4,14 @@
   <h2 class="mb-4 text-center">Create Account</h2>
   <div class="card">
     <div class="card-body">
+HEAD
    {% if form.errors %}
   <div class="alert alert-danger">
     {{ form.errors }}
   </div>
 {% endif %}
+
+c8a898d696c541dd445851bece7e0ea8f7e34743
       <form method="post" enctype="multipart/form-data" class="container mt-4">
   {% csrf_token %}
   
@@ -61,7 +64,8 @@
   <button type="submit" class="btn btn-primary w-100">Create Account</button>
 </form>
 
-
+HEAD
+c8a898d696c541dd445851bece7e0ea8f7e34743
     </div>
   </div>
 </div>
