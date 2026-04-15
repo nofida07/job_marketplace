@@ -4,48 +4,58 @@
   <h2 class="mb-4 text-center">Create Account</h2>
   <div class="card">
     <div class="card-body">
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+      <form method="post" enctype="multipart/form-data" class="container mt-4">
+  {% csrf_token %}
+  
+  <div class="mb-3">
+    {{ form.username.label_tag }}
+    {{ form.username }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.first_name.label_tag }}
+    {{ form.first_name }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.last_name.label_tag }}
+    {{ form.last_name }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.email.label_tag }}
+    {{ form.email }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.mobile.label_tag }}
+    {{ form.mobile }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.dob.label_tag }}
+    {{ form.dob }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.profile_picture.label_tag }}
+    {{ form.profile_picture }}
+  </div>
+  
+  <!-- Password fields -->
+  <div class="mb-3">
+    {{ form.password1.label_tag }}
+    {{ form.password1 }}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+  </div>
+  
+  <button type="submit" class="btn btn-primary w-100">Create Account</button>
+</form>
 
-        <!-- First Name -->
-        <div class="mb-3">
-          <label for="id_first_name" class="form-label">First Name</label>
-          {{ form.first_name }}
-        </div>
-
-        <!-- Last Name -->
-        <div class="mb-3">
-          <label for="id_last_name" class="form-label">Last Name</label>
-          {{ form.last_name }}
-        </div>
-
-        <!-- Email -->
-        <div class="mb-3">
-          <label for="id_email" class="form-label">Email</label>
-          {{ form.email }}
-        </div>
-
-        <!-- Mobile -->
-        <div class="mb-3">
-          <label for="id_mobile" class="form-label">Mobile</label>
-          {{ form.mobile }}
-        </div>
-
-        <!-- Date of Birth -->
-        <div class="mb-3">
-          <label for="id_dob" class="form-label">Date of Birth</label>
-          {{ form.dob }}
-        </div>
-
-        <!-- Profile Picture -->
-        <div class="mb-3">
-          <label for="id_profile_picture" class="form-label">Profile Picture</label>
-          {{ form.profile_picture }}
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Create Account</button>
-      </form>
     </div>
   </div>
 </div>
