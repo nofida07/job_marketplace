@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jobs',
 ]
+CSRF_TRUSTED_ORIGINS = ['https://NofidaMudhol207.pythonanywhere.com']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,6 +69,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'job_marketplace.wsgi.application'
+
 
 
 # Database

@@ -7,7 +7,7 @@ from django.contrib import messages
 from .models import Job, Application, Internship, Profile
 from .forms import ApplicationForm, JobForm, CreateAccountForm
 from django.contrib.auth.views import LoginView
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 class CustomLoginView(LoginView):
