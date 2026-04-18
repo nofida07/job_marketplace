@@ -46,20 +46,25 @@ def create_account(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = form.cleaned_data["username"].lower()
+            user.set_password(form.cleaned_data["password1"])  # ✅ hash password
             user.save()
 
-            profile, created = Profile.objects.get_or_create(user=user)
-            profile.mobile = form.cleaned_data["mobile"]
-            profile.dob = form.cleaned_data["dob"]
-            profile.profile_picture = form.cleaned_data.get("profile_picture")
-            profile.save()
+            Profile.objects.update_or_create(
+                user=user,
+                defaults={
+                    "mobile": form.cleaned_data["mobile"],
+                    "dob": form.cleaned_data["dob"],
+                    "profile_picture": form.cleaned_data.get("profile_picture"),
+                }
+            )
 
-            messages.success(request, "Account created! Please login.")
-            return redirect("login")
+            messages.success(request, "Account created successfully! Please login.")
+            return redirect("login")  # ✅ go to login page
     else:
         form = CreateAccountForm()
 
     return render(request, "create_account.html", {"form": form})
+
 
 
 # Register (basic Django form)
@@ -183,18 +188,23 @@ def contact(request):
 
 @login_required
 def edit_profile(request):
-    # Ensure the user has a profile
-    profile, created = Profile.objects.get_or_create(user=request.user)
-
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect("profile")
-    else:
-        form = ProfileForm(instance=profile)
+        user = request.user
+        profile = user.profile
 
-    return render(request, "edit_profile.html", {"form": form})
+        user.first_name = request.POST.get("first_name")
+        user.last_name = request.POST.get("last_name")
+        user.save()
+
+        profile.mobile = request.POST.get("mobile")
+        profile.dob = request.POST.get("dob")
+        profile.save()
+
+        messages.success(request, "Profile updated successfully!")  # ✅ success message
+        return redirect("home")  # redirect to home after update
+
+    return render(request, "edit_profile.html", {"profile": request.user.profile})
+
 
 @login_required
 def profile_view(request):

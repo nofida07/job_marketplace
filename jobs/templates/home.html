@@ -3,6 +3,22 @@
 {% load static %}
 {% block content %}
 
+<!-- ✅ Messages Section -->
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- ✅ Welcome Section -->
+{% if user.is_authenticated %}
+  <div class="container mt-3">
+    <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+  </div>
+{% endif %}
+
 <!-- Hero Section -->
 <div class="hero-section">
   <div class="overlay"></div>
@@ -13,28 +29,25 @@
   </div>
 </div>
 
-    
-    <!-- Search Bar -->
-    <form method="get" action="{% url 'job_list' %}" class="row g-3 justify-content-center mt-3">
-      <div class="col-md-4">
-        <input type="text" name="title" class="form-control" placeholder="Job title...">
-      </div>
-      <div class="col-md-4">
-        <input type="text" name="location" class="form-control" placeholder="Location...">
-      </div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-success w-100">Search</button>
-      </div>
-    </form>
-
-    <!-- Quick Filters -->
-    <div class="mt-4">
-      <a href="{% url 'job_list' %}" class="btn btn-warning">Part-time</a>
-      <a href="{% url 'job_list' %}" class="btn btn-warning">Full-time</a>
-      <a href="{% url 'job_list' %}" class="btn btn-warning">Work From Home</a>
-      <a href="{% url 'internship_list' %}" class="btn btn-warning">Internships</a>
-    </div>
+<!-- Search Bar -->
+<form method="get" action="{% url 'job_list' %}" class="row g-3 justify-content-center mt-3">
+  <div class="col-md-4">
+    <input type="text" name="title" class="form-control" placeholder="Job title...">
   </div>
+  <div class="col-md-4">
+    <input type="text" name="location" class="form-control" placeholder="Location...">
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-success w-100">Search</button>
+  </div>
+</form>
+
+<!-- Quick Filters -->
+<div class="mt-4">
+  <a href="{% url 'job_list' %}" class="btn btn-warning">Part-time</a>
+  <a href="{% url 'job_list' %}" class="btn btn-warning">Full-time</a>
+  <a href="{% url 'job_list' %}" class="btn btn-warning">Work From Home</a>
+  <a href="{% url 'internship_list' %}" class="btn btn-warning">Internships</a>
 </div>
 
 <!-- Featured Jobs -->
