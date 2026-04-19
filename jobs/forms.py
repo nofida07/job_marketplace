@@ -81,8 +81,10 @@ class ApplicationForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["mobile", "dob", "profile_picture"]
+        fields = ["name", "email", "mobile", "dob", "profile_picture"]
         widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
             "mobile": forms.TextInput(attrs={"class": "form-control"}),
             "dob": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "profile_picture": forms.ClearableFileInput(attrs={"class": "form-control"}),

@@ -8,7 +8,7 @@ body {
 
 /* Home page scheme */
 body.home-page {
-  background-color: #5f92c4 !important; /* light blue background */
+  background-color: #2c4c6c !important; /* light blue background */
 }
 
 /* Headings only on home */
@@ -52,7 +52,7 @@ body.home-page .hero-section {
   height: 400px;
   background: url("/static/images/banner.jpg") no-repeat center center;
   background-size: cover;
-  color: white;
+  color: rgb(237, 235, 235);
 }
 
 

@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 
-<!-- ✅ Messages Section -->
+<!-- ✅ Messages Section (temporary alerts, auto-dismiss handled in base.html) -->
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
@@ -12,9 +12,9 @@
   </div>
 {% endif %}
 
-<!-- ✅ Welcome Section -->
+<!-- ✅ Persistent Greeting Section -->
 {% if user.is_authenticated %}
-  <div class="container mt-3">
+  <div class="container mt-3 text-center">
     <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
   </div>
 {% endif %}

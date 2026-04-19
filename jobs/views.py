@@ -8,6 +8,8 @@ from .models import Job, Application, Internship, Profile
 from .forms import ApplicationForm, JobForm, CreateAccountForm
 from django.contrib.auth.views import LoginView
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+from .forms import ProfileForm
 
 
 class CustomLoginView(LoginView):
@@ -93,6 +95,7 @@ def register(request):
 
             # Log the user in immediately after registration
             login(request, user)
+            messages.success(request, f"Welcome, {request.user.first_name}!")
             return redirect("home")
     else:
         form = CreateAccountForm()
@@ -105,7 +108,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, f"Welcome back, {user.first_name or user.username}!")
+            messages.success(request, f"Welcome, {request.user.first_name}!")
             return redirect("home")
     else:
         form = AuthenticationForm()
@@ -132,7 +135,6 @@ def job_detail(request, pk):
 
 
 # jobs/views.py
-
 @login_required
 def apply_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
@@ -188,23 +190,16 @@ def contact(request):
 
 @login_required
 def edit_profile(request):
+    profile = request.user.profile
     if request.method == "POST":
-        user = request.user
-        profile = user.profile
-
-        user.first_name = request.POST.get("first_name")
-        user.last_name = request.POST.get("last_name")
-        user.save()
-
-        profile.mobile = request.POST.get("mobile")
-        profile.dob = request.POST.get("dob")
-        profile.save()
-
-        messages.success(request, "Profile updated successfully!")  # ✅ success message
-        return redirect("home")  # redirect to home after update
-
-    return render(request, "edit_profile.html", {"profile": request.user.profile})
-
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect("home")
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, "edit_profile.html", {"form": form})
 
 @login_required
 def profile_view(request):
