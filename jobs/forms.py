@@ -9,24 +9,24 @@ from django.contrib.auth.models import User
 from django import forms
 
 class CreateAccountForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    mobile = forms.CharField(max_length=15)
-    dob = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    profile_picture = forms.ImageField(required=False)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    mobile = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    dob = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    profile_picture = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
         fields = [
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-            "mobile",
-            "dob",
-            "profile_picture",
-            "password1",
-            "password2",
+            "username", "first_name", "last_name", "email",
+            "mobile", "dob", "profile_picture", "password1", "password2"
         ]
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-control"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
+            "password1": forms.PasswordInput(attrs={"class": "form-control"}),
+            "password2": forms.PasswordInput(attrs={"class": "form-control"}),
+        }
 
     def clean_username(self):
         username = self.cleaned_data.get("username").lower()

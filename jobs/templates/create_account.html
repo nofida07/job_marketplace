@@ -1,71 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5" style="max-width: 600px;">
-  <h2 class="mb-4 text-center">Create Account</h2>
-  <div class="card">
+  <h2 class="mb-4 text-center">Create Account</h2>  <div class="card shadow-sm">
     <div class="card-body">
 
-   {% if form.errors %}
-  <div class="alert alert-danger">
-    {{ form.errors }}
-  </div>
-{% endif %}
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          {{ form.errors }}
+        </div>
+      {% endif %}
 
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-      <form method="post" enctype="multipart/form-data" class="container mt-4">
-  {% csrf_token %}
-  
-  <div class="mb-3">
-    {{ form.username.label_tag }}
-    {{ form.username }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.first_name.label_tag }}
-    {{ form.first_name }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.last_name.label_tag }}
-    {{ form.last_name }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.email.label_tag }}
-    {{ form.email }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.mobile.label_tag }}
-    {{ form.mobile }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.dob.label_tag }}
-    {{ form.dob }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.profile_picture.label_tag }}
-    {{ form.profile_picture }}
-  </div>
-  
-  <!-- Password fields -->
-  <div class="mb-3">
-    {{ form.password1.label_tag }}
-    {{ form.password1 }}
-  </div>
-  
-  <div class="mb-3">
-    {{ form.password2.label_tag }}
-    {{ form.password2 }}
-  </div>
-  
-  <button type="submit" class="btn btn-primary w-100">Create Account</button>
-</form>
+        <!-- Username -->
+        <div class="mb-3">
+          {{ form.username.label_tag }}
+          {{ form.username }}
+        </div>
 
+        <div class="mb-3">
+          {{ form.first_name.label_tag }}
+          {{ form.first_name }}
+        </div>
 
+        <div class="mb-3">
+          {{ form.last_name.label_tag }}
+          {{ form.last_name }}
+        </div>
 
+        <div class="mb-3">
+          {{ form.email.label_tag }}
+          {{ form.email }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.mobile.label_tag }}
+          {{ form.mobile }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.dob.label_tag }}
+          {{ form.dob }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.profile_picture.label_tag }}
+          {{ form.profile_picture }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.password1.label_tag }}
+          {{ form.password1 }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.password2.label_tag }}
+          {{ form.password2 }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+      </form>
     </div>
   </div>
 </div>

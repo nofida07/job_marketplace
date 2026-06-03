@@ -1,0 +1,6 @@
+/* Use banner.jpg */
+.hero-section {
+  background: url("/static/images/banner.jpg") no-repeat center center;
+  background-size: cover;
+  color: white;
+}

@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 
-<!-- ✅ Messages Section (temporary alerts, auto-dismiss handled in base.html) -->
+<!-- ✅ Messages Section -->
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
@@ -12,7 +12,7 @@
   </div>
 {% endif %}
 
-<!-- ✅ Persistent Greeting Section -->
+<!-- ✅ Greeting Section -->
 {% if user.is_authenticated %}
   <div class="container mt-3 text-center">
     <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
@@ -22,28 +22,47 @@
 <!-- Hero Section -->
 <div class="hero-section">
   <div class="overlay"></div>
-  <div class="content">
+  <div class="content text-center">
     <h1>Find Your Dream Job</h1>
     <p>Browse featured jobs and internships today</p>
     <a href="{% url 'job_list' %}" class="btn btn-primary">Explore Jobs</a>
-  </div>
-</div>
 
-<!-- Search Bar -->
-<form method="get" action="{% url 'job_list' %}" class="row g-3 justify-content-center mt-3">
-  <div class="col-md-4">
-    <input type="text" name="title" class="form-control" placeholder="Job title...">
-  </div>
-  <div class="col-md-4">
-    <input type="text" name="location" class="form-control" placeholder="Location...">
-  </div>
-  <div class="col-md-2">
-    <button type="submit" class="btn btn-success w-100">Search</button>
-  </div>
-</form>
+    <!-- Search Bar -->
+    <form method="get" action="{% url 'job_list' %}" class="row g-3 justify-content-center mt-3">
+      <div class="col-md-4">
+        <input type="text" name="title" class="form-control" placeholder="Job title...">
+      </div>
+      <div class="col-md-4">
+        <input type="text" name="location" class="form-control" placeholder="Location...">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Search</button>
+      </div>
+    </form>
 
-<!-- Quick Filters -->
-<div class="mt-4">
+    <!-- ✅ Moving Company Names Row -->
+    <div class="company-row mt-4">
+      <div class="company-track">
+        <span>Google</span>
+        <span>Amazon</span>
+        <span>Flipkart</span>
+        <span>OLA</span>
+        <span>Microsoft</span>
+        <span>Pinterest</span>
+        <span>Adobe</span>
+        <span>Apple</span>
+        <span>Meta</span>
+        <span>Netflix</span>
+        <span>Uber</span>
+        <span>Zomato</span>
+        <span>Swiggy</span>
+      </div>
+    </div>
+  </div>
+</div> <!-- ✅ closes hero-section -->
+
+<!-- ✅ Quick Filters OUTSIDE hero -->
+<div class="mt-4 text-center">
   <a href="{% url 'job_list' %}" class="btn btn-warning">Part-time</a>
   <a href="{% url 'job_list' %}" class="btn btn-warning">Full-time</a>
   <a href="{% url 'job_list' %}" class="btn btn-warning">Work From Home</a>
@@ -57,14 +76,11 @@
     {% for job in jobs %}
       <div class="col-md-4 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-body">
+          <div class="card-body text-center">
             <span class="badge bg-primary mb-2">Featured</span>
             <h5 class="card-title">{{ job.title }}</h5>
             <p class="card-text">
-              <strong>Company:</strong> {{ job.company }}<br>
-              <strong>Location:</strong> {{ job.location }}<br>
-              <strong>Type:</strong> {{ job.get_job_type_display }}<br>
-              <strong>Salary:</strong> {{ job.formatted_salary }}
+              <strong>Company:</strong> {{ job.company }}
             </p>
             <a href="{% url 'job_detail' job.id %}" class="btn btn-primary w-100">View Job</a>
           </div>
@@ -83,14 +99,11 @@
     {% for internship in internships %}
       <div class="col-md-4 mb-4">
         <div class="card shadow-sm h-100">
-          <div class="card-body">
+          <div class="card-body text-center">
             <span class="badge bg-success mb-2">Featured</span>
             <h5 class="card-title">{{ internship.title }}</h5>
             <p class="card-text">
-              <strong>Company:</strong> {{ internship.company }}<br>
-              <strong>Location:</strong> {{ internship.location }}<br>
-              <strong>Duration:</strong> {{ internship.duration }}<br>
-              <strong>Type:</strong> {{ internship.get_internship_type_display }}
+              <strong>Company:</strong> {{ internship.company }}
             </p>
             <a href="{% url 'internship_detail' internship.id %}" class="btn btn-success w-100">View Internship</a>
           </div>

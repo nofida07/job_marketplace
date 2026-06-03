@@ -1,36 +1,35 @@
 /* Global background */
-/* Default background for all pages */
 body {
-  background-color: #5b61a0; /* plain white */
-  color: #212529;
+  background-color: #f8f9fa; /* light neutral background */
+  color: #212529;            /* standard readable text */
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
 /* Home page scheme */
 body.home-page {
-  background-color: #2c4c6c !important; /* light blue background */
+  background-color: #e9ecef !important; /* subtle light gray */
 }
 
 /* Headings only on home */
 body.home-page h2 {
   margin-bottom: 20px;
-  color: #212529;
+  color: #212529; /* dark gray for readability */
 }
 
 /* Navbar only on home */
 body.home-page .navbar {
-  background-color: #212529 !important;
+  background-color: #0d1b2a !important; /* professional dark navy */
 }
 
 /* Footer only on home */
 body.home-page footer {
-  background-color: #212529;
-  color: #0f0f10;
+  background-color: #0d1b2a;
+  color: #adb5bd; /* muted gray text */
 }
 
 /* Cards only on home */
 body.home-page .card {
-  background-color: #0d0b0b;
+  background-color: #ffffff; /* clean white cards */
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   padding: 1rem;
@@ -39,7 +38,7 @@ body.home-page .card {
 
 /* Buttons only on home */
 body.home-page .btn-primary {
-  background-color: #0d6efd;
+  background-color: #0d6efd; /* Bootstrap blue */
   border: none;
 }
 body.home-page .btn-primary:hover {
@@ -52,10 +51,8 @@ body.home-page .hero-section {
   height: 400px;
   background: url("/static/images/banner.jpg") no-repeat center center;
   background-size: cover;
-  color: rgb(237, 235, 235);
+  color: #ffffff; /* white text for contrast */
 }
-
-
 body.home-page .hero-section .overlay {
   background-color: rgba(0,0,0,0.5);
   position: absolute;
@@ -67,7 +64,6 @@ body.home-page .hero-section .content {
   z-index: 1;
 }
 
-
 /* Headings */
 h2 {
   margin-bottom: 20px;
@@ -76,18 +72,18 @@ h2 {
 
 /* Navbar */
 .navbar {
-  background-color: #212529 !important; /* dark navbar */
+  background-color: #0d1b2a !important; /* consistent dark navy */
 }
 
 /* Footer */
 footer {
-  background-color: #212529;
-  color: #0f0f0f;
+  background-color: #0d1b2a;
+  color: #adb5bd;
 }
 
 /* Cards (jobs/internships) */
 .card {
-  background-color: #050404;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   padding: 1rem;
@@ -109,10 +105,10 @@ footer {
   height: 400px;
   background: url("/static/images/banner.jpg") no-repeat center center;
   background-size: cover;
-  color: rgb(133, 84, 84);
+  color: #ffffff;
 }
 .hero-section .overlay {
-  background-color: rgba(0,0,0,0.5); /* dark overlay for readability */
+  background-color: rgba(0,0,0,0.5);
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
@@ -120,4 +116,37 @@ footer {
 .hero-section .content {
   position: relative;
   z-index: 1;
+}
+
+.hero-section .form-control {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+}
+.hero-section .btn-success {
+  background-color: #198754 !important;
+  border: none !important;
+}
+.company-row {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.company-track {
+  display: inline-block;
+  padding-left: 100%; /* start off-screen */
+  animation: scroll-left 25s linear infinite;
+}
+
+.company-track span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0d1b2a;
+  margin: 0 40px;
+  white-space: nowrap;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
