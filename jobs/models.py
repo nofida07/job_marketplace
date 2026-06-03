@@ -90,7 +90,7 @@ class ApplicationForm(forms.ModelForm):
 # User Profile Model
 # ----------------------------
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(blank=True)
     mobile = models.CharField(max_length=15, blank=True, null=True)
