@@ -18,7 +18,7 @@ urlpatterns = [
     path("internships/", views.internship_list, name="internship_list"),
     path("internships/<int:pk>/", views.internship_detail, name="internship_detail"),
     path("internships/<int:pk>/apply/", views.apply_internship, name="apply_internship"),
-
+    path('search/', views.search, name='search'),
     path("profile/", views.profile_view, name="profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
 

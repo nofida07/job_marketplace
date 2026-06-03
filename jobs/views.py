@@ -1,35 +1,28 @@
-from .forms import ProfileForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from .models import Job, Application, Internship, Profile
-from .forms import ApplicationForm, JobForm, CreateAccountForm
+from django.http import HttpResponse
 from django.contrib.auth.views import LoginView
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages
-from .forms import ProfileForm
+
+from .models import Job, Application, Internship, Profile
+from .forms import ProfileForm, ApplicationForm, JobForm, CreateAccountForm
 
 
+# Custom Login
 class CustomLoginView(LoginView):
     template_name = "login.html"
 
     def form_valid(self, form):
         username = form.cleaned_data.get("username").lower()
         password = form.cleaned_data.get("password")
-
-        user = authenticate(
-            self.request,
-            username=username,
-            password=password
-        )
-
+        user = authenticate(self.request, username=username, password=password)
         if user is not None:
             login(self.request, user)
             return redirect("home")
-        else:
-            return self.form_invalid(form)
+        return self.form_invalid(form)
+
 
 # Home
 def home(request):
@@ -41,14 +34,14 @@ def home(request):
     })
 
 
-# Create Account (custom form)
+# Create Account
 def create_account(request):
     if request.method == "POST":
         form = CreateAccountForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = form.cleaned_data["username"].lower()
-            user.set_password(form.cleaned_data["password1"])  # ✅ hash password
+            user.set_password(form.cleaned_data["password1"])
             user.save()
 
             Profile.objects.update_or_create(
@@ -59,17 +52,33 @@ def create_account(request):
                     "profile_picture": form.cleaned_data.get("profile_picture"),
                 }
             )
-
             messages.success(request, "Account created successfully! Please login.")
-            return redirect("login")  # ✅ go to login page
+            return redirect("login")
     else:
         form = CreateAccountForm()
-
     return render(request, "create_account.html", {"form": form})
 
 
+# ✅ Search (jobs only)
+def search(request):
+    title = request.GET.get("title", "").strip()
+    location = request.GET.get("location", "").strip()
 
-# Register (basic Django form)
+    jobs = Job.objects.all()
+    if title:
+        jobs = jobs.filter(title__icontains=title)
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+
+    # ✅ Always return something, even if template fails
+    try:
+        return render(request, "job_list.html", {"jobs": jobs})
+    except Exception as e:
+        return HttpResponse(f"DEBUG ERROR: {e}")
+
+
+
+# Register
 def register(request):
     if request.method == "POST":
         form = CreateAccountForm(request.POST, request.FILES)
@@ -78,12 +87,9 @@ def register(request):
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.email = form.cleaned_data["email"]
-
-            # ✅ Hash the password before saving
             user.set_password(form.cleaned_data["password1"])
             user.save()
 
-            # Save Profile fields
             Profile.objects.update_or_create(
                 user=user,
                 defaults={
@@ -92,15 +98,14 @@ def register(request):
                     "profile_picture": form.cleaned_data.get("profile_picture"),
                 }
             )
-
-            # Log the user in immediately after registration
             login(request, user)
             messages.success(request, f"Welcome, {request.user.first_name}!")
             return redirect("home")
     else:
         form = CreateAccountForm()
     return render(request, "create_account.html", {"form": form})
-    
+
+
 # Login
 def login_view(request):
     if request.method == "POST":
@@ -114,11 +119,13 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, "login.html", {"form": form})
 
+
 # Logout
 def logout_view(request):
     logout(request)
     messages.success(request, "You have logged out successfully.")
     return redirect("home")
+
 
 # Jobs
 def job_list(request):
@@ -128,13 +135,12 @@ def job_list(request):
         jobs = jobs.filter(title__icontains=query) | jobs.filter(company__icontains=query) | jobs.filter(location__icontains=query)
     return render(request, "job_list.html", {"jobs": jobs})
 
+
 def job_detail(request, pk):
-    job = Job.objects.get(pk=pk)
+    job = get_object_or_404(Job, pk=pk)
     return render(request, "job_detail.html", {"job": job})
 
 
-
-# jobs/views.py
 @login_required
 def apply_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
@@ -149,6 +155,7 @@ def apply_job(request, job_id):
     else:
         form = ApplicationForm()
     return render(request, "apply_job.html", {"form": form, "job": job})
+
 
 @login_required
 def apply_internship(request, pk):
@@ -166,6 +173,7 @@ def apply_internship(request, pk):
         form = ApplicationForm()
     return render(request, "apply_internship.html", {"form": form, "internship": internship})
 
+
 # Internships
 def internship_list(request):
     internships = Internship.objects.all()
@@ -176,18 +184,21 @@ def internship_detail(request, pk):
     internship = get_object_or_404(Internship, pk=pk)
     return render(request, "internship_detail.html", {"internship": internship})
 
+
 # Static pages
 def about(request):
     return render(request, "about.html")
 
+
 def terms(request):
     return render(request, "terms.html")
+
 
 def contact(request):
     return render(request, "contact.html")
 
 
-
+# Profile
 @login_required
 def edit_profile(request):
     profile = request.user.profile
@@ -200,6 +211,7 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, "edit_profile.html", {"form": form})
+
 
 @login_required
 def profile_view(request):

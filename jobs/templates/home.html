@@ -7,7 +7,10 @@
 {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
-      <div class="alert alert-success">{{ message }}</div>
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
     {% endfor %}
   </div>
 {% endif %}
@@ -15,9 +18,12 @@
 <!-- ✅ Greeting Section -->
 {% if user.is_authenticated %}
   <div class="container mt-3 text-center">
-    <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      Welcome, {{ user.first_name|default:user.username }}!
+    </div>
   </div>
 {% endif %}
+
 
 <!-- Hero Section -->
 <div class="hero-section">
@@ -27,8 +33,8 @@
     <p>Browse featured jobs and internships today</p>
     <a href="{% url 'job_list' %}" class="btn btn-primary">Explore Jobs</a>
 
-    <!-- Search Bar -->
-    <form method="get" action="{% url 'job_list' %}" class="row g-3 justify-content-center mt-3">
+    <!-- ✅ Job Search Bar (only jobs) -->
+    <form method="get" action="{% url 'search' %}" class="row g-3 justify-content-center mt-3">
       <div class="col-md-4">
         <input type="text" name="title" class="form-control" placeholder="Job title...">
       </div>
@@ -63,9 +69,9 @@
 
 <!-- ✅ Quick Filters OUTSIDE hero -->
 <div class="mt-4 text-center">
-  <a href="{% url 'job_list' %}" class="btn btn-warning">Part-time</a>
-  <a href="{% url 'job_list' %}" class="btn btn-warning">Full-time</a>
-  <a href="{% url 'job_list' %}" class="btn btn-warning">Work From Home</a>
+  <a href="{% url 'job_list' %}?type=part-time" class="btn btn-warning">Part-time</a>
+  <a href="{% url 'job_list' %}?type=full-time" class="btn btn-warning">Full-time</a>
+  <a href="{% url 'job_list' %}?type=wfh" class="btn btn-warning">Work From Home</a>
   <a href="{% url 'internship_list' %}" class="btn btn-warning">Internships</a>
 </div>
 
@@ -92,7 +98,7 @@
   </div>
 </div>
 
-<!-- Featured Internships -->
+<!-- Featured Internships (kept) -->
 <div class="container mt-5">
   <h3 class="mb-3">Featured Internships</h3>
   <div class="row">
